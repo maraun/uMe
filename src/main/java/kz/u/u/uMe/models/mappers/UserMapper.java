@@ -29,8 +29,8 @@ public class UserMapper extends AbstractModelMapper<User, UserDto> {
     @Override
     public UserDto toDto(User user) {
         UserDto userDto = modelMapper.map(user, UserDto.class);
-        if (user.getRole() != null) {
-            userDto.setRole(roleMapper.toDto(user.getRole()));
+        if (user.getRoles() != null) {
+            userDto.setRoles(roleMapper.toDtoSet(user.getRoles()));
         }
         if (user.getProfile() != null) {
             userDto.setProfile(profileMapper.toDto(user.getProfile()));
@@ -41,8 +41,8 @@ public class UserMapper extends AbstractModelMapper<User, UserDto> {
     @Override
     public User toEntity(UserDto userDto) {
         User user = modelMapper.map(userDto, User.class);
-        if (userDto.getRole() != null) {
-            user.setRole(roleMapper.toEntity(userDto.getRole()));
+        if (userDto.getRoles() != null) {
+            user.setRoles(roleMapper.toEntitySet(userDto.getRoles()));
         }
         if (userDto.getProfile() != null) {
             user.setProfile(profileMapper.toEntity(userDto.getProfile()));

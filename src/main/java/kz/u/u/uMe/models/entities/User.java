@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 
 @Entity
@@ -31,9 +32,32 @@ public class User extends AuditModel {
     @NotNull(message = "password is required")
     private String password;
 
-    @ManyToOne
+/*    @ManyToOne
     @NotNull(message = "role is required")
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Role role;
+    @OnDelete(action = OnDeleteAction.NO_ACTION)*/
+@ManyToMany(
+        fetch = FetchType.EAGER,
+        cascade = CascadeType.ALL
+)
+@JoinTable(
+        name = "users_roless",
+        joinColumns =
+                {
+                        @JoinColumn(
+                                name = "user_id",
+                                nullable = false,
+                                foreignKey = @ForeignKey(name = "fk_users_roles_users")
+                        )
+                },
+        inverseJoinColumns =
+                {
+                        @JoinColumn(
+                                name = "role_id",
+                                nullable = false,
+                                foreignKey = @ForeignKey(name = "fk_users_roles_roles")
+                        )
+                }
+)
+    private Set<Role> roles;
 
 }

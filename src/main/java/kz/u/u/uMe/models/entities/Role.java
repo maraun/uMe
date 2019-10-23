@@ -16,12 +16,12 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role extends AuditModel {
-
+/*
     public final static Long ROLE_TEACHER_ID = 1L;
     public final static Long ROLE_STUDENT_ID = 4L;
 
     public final static String ROLE_TEACHER_NAME = "ROLE_TEACHER";
-    public final static String ROLE_STUDENT_NAME = "ROLE_STUDENT";
+    public final static String ROLE_STUDENT_NAME = "ROLE_STUDENT";*/
 
     @Column(unique = true)
     private String name;
