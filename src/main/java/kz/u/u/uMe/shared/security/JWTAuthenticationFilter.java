@@ -45,7 +45,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     new UsernamePasswordAuthenticationToken(
                             creds.getLogin(),
                             creds.getPassword(),
-                            Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName())))
+                            Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName())))/*TODO*/
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
