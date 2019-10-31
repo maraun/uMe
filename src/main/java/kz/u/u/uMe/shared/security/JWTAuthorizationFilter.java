@@ -1,6 +1,7 @@
 package kz.u.u.uMe.shared.security;
 
 import io.jsonwebtoken.Jwts;
+import kz.u.u.uMe.models.entities.Role;
 import kz.u.u.uMe.models.entities.User;
 import kz.u.u.uMe.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
@@ -51,8 +54,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     .getSubject();
             if (user != null) {
                 User currentUser = userService.findByLogin(user);
+                Set authorities = new HashSet<>();
+                for (Role role : currentUser.getRoles()){
+                    authorities.add(new SimpleGrantedAuthority(role.getName()));
+                }
                 return new UsernamePasswordAuthenticationToken(user, null,
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_TEACHER"), new SimpleGrantedAuthority("ROLE_STUDENT")));
+                        authorities);/*TODO*/
                         /*Collections.singletonList(new SimpleGrantedAuthority(currentUser.getRole().getName())));*/
             }
             return null;
