@@ -10,6 +10,6 @@ INSERT INTO ume.umembers (membertype, id, created_at, deleted_at, updated_at, pa
 INSERT INTO ume.umembers (membertype, id, created_at, deleted_at, updated_at, parent_id, firstname, lastname, middlename, phone, photopath, group_name, grouptype_id) VALUES ('Group', 3, '2019-10-13 09:24:03', null, '2019-10-13 09:24:07', null, null, null, null, null, null, 'Finance', 2);
 INSERT INTO ume.umembers (membertype, id, created_at, deleted_at, updated_at, parent_id, firstname, lastname, middlename, phone, photopath, group_name, grouptype_id) VALUES ('Group', 4, '2019-10-13 09:23:37', null, '2019-10-13 09:23:42', 2, null, null, null, null, null, 'Digital technology', 3);
 
-insert into users (id, created_at, deleted_at, updated_at, email, login, password, profile_id) values (1, '2019-04-18 19:59:59', null, '2019-04-18 19:59:59', 'admin@u.me', 'admin', '$2a$10$H2PqH5KUkeooBkWeLkKVzOwCcX.6F6Z/HBy4f//rg9/GHiBR8493u', 1, 1);
+insert into users (id, created_at, deleted_at, updated_at, email, login, password, profile_id) values (1, '2019-04-18 19:59:59', null, '2019-04-18 19:59:59', 'admin@u.me', 'admin', '$2a$10$H2PqH5KUkeooBkWeLkKVzOwCcX.6F6Z/HBy4f//rg9/GHiBR8493u', 1);
 insert into users_roless (user_id, role_id) values (1, 1);
 insert into users_roless (user_id, role_id) values (1, 2);
