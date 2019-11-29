@@ -30,7 +30,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    /*@PreAuthorize("hasRole('ROLE_STUDENT')")*/
     public ResponseEntity<?> getAll() {
         return buildResponse(userMapper.toDtoList(userService.findAll()), HttpStatus.OK);
     }
