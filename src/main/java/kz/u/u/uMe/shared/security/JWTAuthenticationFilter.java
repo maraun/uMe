@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -45,15 +46,20 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     .readValue(req.getInputStream(), kz.u.u.uMe.models.entities.User.class);
             kz.u.u.uMe.models.entities.User user = userService.findByLogin(creds.getLogin());
             Set authorities = new HashSet<>();
-            for (Role role : user.getRoles()){
-                authorities.add(new SimpleGrantedAuthority(role.getName()));
+            try {
+                for (Role role : user.getRoles()){
+                    authorities.add(new SimpleGrantedAuthority(role.getName()));
+                }
+                return authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                creds.getLogin(),
+                                creds.getPassword(),
+                                authorities)/*TODO*/
+                );
+            } catch (Exception e){
+                throw new UsernameNotFoundException("Invalid username or password.");
             }
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            creds.getLogin(),
-                            creds.getPassword(),
-                            authorities)/*TODO*/
-            );
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
