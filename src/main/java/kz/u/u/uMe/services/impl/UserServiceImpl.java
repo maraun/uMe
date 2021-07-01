@@ -1,6 +1,7 @@
 package kz.u.u.uMe.services.impl;
 
 import kz.u.u.uMe.exceptions.ServiceException;
+import kz.u.u.uMe.models.entities.Role;
 import kz.u.u.uMe.models.entities.User;
 import kz.u.u.uMe.repositories.UserRepository;
 import kz.u.u.uMe.services.UserService;
@@ -138,7 +139,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set getAuthority(User user) {
         Set authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+        for (Role role : user.getRoles()){
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        /*user.getRoles().forEach((r) -> {authorities.add(new SimpleGrantedAuthority(r.getName()));});*//*TODO*/
         return authorities;
     }
 

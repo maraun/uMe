@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import kz.u.u.uMe.models.entities.Role;
 import kz.u.u.uMe.services.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -21,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -41,12 +45,21 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             kz.u.u.uMe.models.entities.User creds = new ObjectMapper()
                     .readValue(req.getInputStream(), kz.u.u.uMe.models.entities.User.class);
             kz.u.u.uMe.models.entities.User user = userService.findByLogin(creds.getLogin());
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            creds.getLogin(),
-                            creds.getPassword(),
-                            Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName())))
-            );
+            Set authorities = new HashSet<>();
+            try {
+                for (Role role : user.getRoles()){
+                    authorities.add(new SimpleGrantedAuthority(role.getName()));
+                }
+                return authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                creds.getLogin(),
+                                creds.getPassword(),
+                                authorities)/*TODO*/
+                );
+            } catch (Exception e){
+                throw new UsernameNotFoundException("Invalid username or password.");
+            }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

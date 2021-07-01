@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -44,5 +45,18 @@ public class RoleMapper extends AbstractModelMapper<Role, RoleDto> {
         return roleDtos.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());
+    }
+    public Set<RoleDto> toDtoSet(Set<Role> roles) {
+
+        return roles.stream()
+                .map(this::toDto)
+                .collect(Collectors.toSet());
+    }
+
+
+    public Set<Role> toEntitySet(Set<RoleDto> roleDtos) {
+        return roleDtos.stream()
+                .map(this::toEntity)
+                .collect(Collectors.toSet());
     }
 }
